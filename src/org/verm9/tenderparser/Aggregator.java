@@ -4,7 +4,6 @@ package org.verm9.tenderparser;
 import org.verm9.tenderparser.model.*;
 import org.verm9.tenderparser.view.HtmlView;
 
-import java.io.IOException;
 
 /**
  * Created by nonu on 9/5/2016.
@@ -22,6 +21,9 @@ public class Aggregator
         Controller c = new Controller(m);
         v.setController(c);
         v.userKeyWordsSelectEmulationMethod();
-
+        System.out.println("");
+        System.out.println("-The program has finished its work.-");
+        System.out.println("---Look up for a result in items.html.---");
+        System.out.println("");
     }
 }
