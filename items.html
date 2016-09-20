@@ -2,40 +2,97 @@
 <html lang="ru">
  <head> 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> 
+  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script> 
+  <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.js"></script> 
   <meta charset="utf-8"> 
   <title>Вакансии</title> 
   <style>
-   td {
-    border: solid 1px gray;
-    padding: 3px;
-   }
-  </style> 
+  td {
+   border: solid 1px gray;
+  }
+ </style> 
  </head> 
  <body> 
-  <table> 
-   <tbody> 
+  <script type="text/javascript">
+ $(document).ready(function() {
+
+  (function (factory) {
+   if (typeof define === "function" && define.amd) {
+    define(["jquery", "moment", "datatables"], factory);
+   } else {
+    factory(jQuery, moment);
+   }
+  }(function ($, moment) {
+
+   $.fn.dataTable.moment = function ( format, locale ) {
+    var types = $.fn.dataTable.ext.type;
+
+    // Add type detection
+    types.detect.unshift( function ( d ) {
+     // Strip HTML tags if possible
+     if ( d && d.replace ) {
+      d = d.replace(/<.*?>/g, '');
+     }
+
+     // Null and empty values are acceptable
+     if ( d === '' || d === null ) {
+      return 'moment-'+format;
+     }
+
+     return moment( d, format, locale, true ).isValid() ?
+     'moment-'+format :
+             null;
+    } );
+
+    // Add sorting method - use an integer for the sorting
+    types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
+     if ( d && d.replace ) {
+      d = d.replace(/<.*?>/g, '');
+     }
+     return d === '' || d === null ?
+             -Infinity :
+             parseInt( moment( d, format, locale, true ).format( 'x' ), 10 );
+    };
+   };
+
+  }));
+
+  $.fn.dataTable.moment( 'DD.MM.YYYY HH:mm' );
+
+  $('#datatable').DataTable( {
+   "order": [[ 2, "desc" ]]
+  } );
+ } );
+
+</script> 
+  <table id="datatable" class="display" cellspacing="0" width="100%"> 
+   <thead> 
     <tr> 
      <th>Description</th> 
-     <th style="width: 160px;">Price</th>
+     <th style="width: 160px;">Price</th> 
      <th style="width: 100px;">Published</th> 
      <th style="width: 100px;">End Date</th> 
      <th style="width: 200px;">Company Name</th> 
      <th style="width: 100px;">Site Name</th> 
-    </tr>                                                                      
-    <tr class="item"> 
-     <td class="description"><a href="https://www.fabrikant.ru/trades/atom/ProposalRequest/?action=view&amp;id=20751">выполнение строительно-монтажных работ по ремонту помещений в зданиях 251 А и 254 по объекту: производственная площадка филиала «ЦКБМ 2» по адресу г. Сосновый Бор, ул. Профсоюзов, д.7</a></td> 
-     <td class="price">2 220 590.08&nbsp;RUB</td> 
-     <td class="published">09.09.2016 13:30</td> 
-     <td class="endDate">07.10.2016 23:59</td> 
-     <td class="companyName">Акционерное общество "Центральное конструкторское бюро машиностроения" </td> 
-     <td class="siteName">Fabrikant</td> 
-    </tr>
+    </tr> 
+   </thead> 
+   <tbody>             
     <tr class="item"> 
      <td class="description"><a href="https://www.fabrikant.ru/trades/atom/PriceRequest/?action=view&amp;id=34489">Поставка электромонтажных материалов для освещения участков сборки ПГВ</a></td> 
      <td class="price">1 037 352.54&nbsp;RUB</td> 
      <td class="published">07.09.2016 17:14</td> 
      <td class="endDate">10.10.2016 23:59</td> 
      <td class="companyName">Филиал Открытого акционерного общества "Инжиниринговая компания "АЭМ-технологии" "Атоммаш" </td> 
+     <td class="siteName">Fabrikant</td> 
+    </tr>
+    <tr class="item"> 
+     <td class="description"><a href="https://www.fabrikant.ru/trades/atom/ProposalRequest/?action=view&amp;id=20865">выполнение строительно-монтажных работ по ремонту помещений КПП в здании №258, замена ливневой канализации в здании №253Б и ремонткровли на здании №254 по адресу г. Сосновый Бор, ул. Профсоюзов, д.7, Филиала "ЦКБМ-2"</a></td> 
+     <td class="price">5 557 939.16&nbsp;RUB</td> 
+     <td class="published">20.09.2016 09:06</td> 
+     <td class="endDate">17.10.2016 23:59</td> 
+     <td class="companyName">Акционерное общество "Центральное конструкторское бюро машиностроения"</td> 
      <td class="siteName">Fabrikant</td> 
     </tr>
     <tr class="item"> 
@@ -109,6 +166,14 @@
      <td class="endDate">29.12.2014 23:59</td> 
      <td class="companyName">Филиал Открытого акционерного общества "Инжиниринговая компания "АЭМ-технологии" "Атоммаш" </td> 
      <td class="siteName">Fabrikant</td> 
+    </tr>
+    <tr class="item"> 
+     <td class="description"><a href="http://web.etprf.ru/BRNotification/id/514320">Открытый запрос предложений в электронной форме на право заключения договора на поставку оборудования (Сварочно-монтажные столы).</a></td> 
+     <td class="price">12 240 000</td> 
+     <td class="published">25.08.2016 09:16</td> 
+     <td class="endDate">05.09.2016 12:00</td> 
+     <td class="companyName">АО 'Климов'</td> 
+     <td class="siteName">etpfr</td> 
     </tr>
     <tr class="item template" style="display: none"> 
      <td class="description"><a href="url"></a></td> 

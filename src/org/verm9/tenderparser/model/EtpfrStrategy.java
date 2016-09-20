@@ -86,8 +86,15 @@ public class EtpfrStrategy implements Strategy {
                     i.setDescription(description);
                     i.setPrice( e.getElementsByTag("td").get(4).text() );
                     i.setCompanyName( e.getElementsByTag("td").get(5).text() );
-                    i.setPublishDate( e.getElementsByTag("td").get(7).text() );
-                    i.setEndDate( e.getElementsByTag("td").get(8).text() );
+
+                    String publishDate = e.getElementsByTag("td").get(7).text();
+                    publishDate = publishDate.substring(0, 16);
+                    i.setPublishDate(publishDate);
+
+                    String endDate = e.getElementsByTag("td").get(8).text();
+                    endDate = endDate.substring(0, 16);
+                    i.setEndDate(endDate);
+
                     i.setSiteName("etpfr");
                     i.setUrl( URL_ITEM_TEMPLATE + e.getElementsByClass("RowAction").first().getElementsByTag("a").first().attr("href") );
                     result.add(i);

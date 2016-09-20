@@ -4,6 +4,7 @@ package org.verm9.tenderparser.view;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.verm9.tenderparser.Controller;
 import org.verm9.tenderparser.vo.Item;
@@ -54,6 +55,11 @@ public class HtmlView implements View
         return result;
     }
 
+    /**
+     *  itemList.item.getPublishDate() and itemList.item.getEndDate() must return a String
+     *  in Moment.js'es format 'DD.MM.YYYY HH:mm'. In an another case dataTables sorting
+     *  by date will be broken.
+     */
     private String getUpdatedFileContent(List<Item> itemList) {
         Document document;
         try
@@ -63,11 +69,7 @@ public class HtmlView implements View
             Element template = document.select("[class*=\"template\"]").first();
 
             Elements previousVacancies = document.getElementsByAttributeValue("class", "item");
-            for (Element e : previousVacancies) {
-                if (!e.classNames().contains("template")) {
-                    e.remove();
-                }
-            }
+            previousVacancies.stream().filter(e -> !e.classNames().contains("template")).forEach(Node::remove);
 
             for (Item i : itemList) {
                 Element toAdd = template.clone();
