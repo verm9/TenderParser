@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="unnamed">
+    <output-path>$PROJECT_DIR$/out/artifacts/unnamed</output-path>
+    <root id="root">
+      <element id="directory" name="TenderParser">
+        <element id="artifact" artifact-name="TenderParser:jar" />
+        <element id="library" level="project" name="jsoup-1.9.2" />
+        <element id="file-copy" path="$PROJECT_DIR$/RUN.bat" />
+        <element id="file-copy" path="$PROJECT_DIR$/items.html" />
+      </element>
+    </root>
+  </artifact>
+</component>
